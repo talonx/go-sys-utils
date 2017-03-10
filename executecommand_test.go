@@ -1,36 +1,35 @@
 package main
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert" 
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestAllOk(t *testing.T) {
-    args := []string {"-l", "-t", "-r", "/tmp"}
-    _, stderr, exitcode := execute("ls", args)
-    assert := assert.New(t)
+	args := []string{"-l", "-t", "-r", "/tmp"}
+	_, stderr, exitcode := execute("ls", args)
+	assert := assert.New(t)
 
-    assert.Empty(stderr)
-    assert.Equal(0, exitcode)
+	assert.Empty(stderr)
+	assert.Equal(0, exitcode)
 }
 
-
 func TestCmdNotFound(t *testing.T) {
-    args := []string {"-l", "-t", "-r", "/tmp"}
-    stdout, stderr, exitcode := execute("lswontbehere", args)
-    assert := assert.New(t)
+	args := []string{"-l", "-t", "-r", "/tmp"}
+	stdout, stderr, exitcode := execute("lswontbehere", args)
+	assert := assert.New(t)
 
-    assert.Empty(stdout)
-    assert.Equal("executable file not found in $PATH", string(stderr)) //Linux only
-    assert.Equal(1, exitcode)
+	assert.Empty(stdout)
+	assert.Equal("executable file not found in $PATH", string(stderr)) //Linux only
+	assert.Equal(1, exitcode)
 }
 
 func TestInvalidArgs(t *testing.T) {
-    args := []string {"-l", "-t", "-r", "/tmpnothere"}
-    stdout, stderr, exitcode := execute("ls", args)
-    assert := assert.New(t)
+	args := []string{"-l", "-t", "-r", "/tmpnothere"}
+	stdout, stderr, exitcode := execute("ls", args)
+	assert := assert.New(t)
 
-    assert.Empty(stdout)
-    assert.Equal("ls: cannot access '/tmpnothere': No such file or directory\n", string(stderr)) //Linux only
-    assert.Equal(2, exitcode)
+	assert.Empty(stdout)
+	assert.Equal("ls: cannot access '/tmpnothere': No such file or directory\n", string(stderr)) //Linux only
+	assert.Equal(2, exitcode)
 }
